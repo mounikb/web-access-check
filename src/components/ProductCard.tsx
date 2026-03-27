@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShoppingBag, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,74 +11,78 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, index, onAddToCart }: ProductCardProps) => {
+  const [hovered, setHovered] = useState(false);
   const discount = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : null;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: index * 0.08 }}
+      viewport={{ once: true, margin: "-30px" }}
+      transition={{ duration: 0.5, delay: index * 0.05 }}
       className="group relative"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
-      <div className="relative overflow-hidden rounded-2xl glass border border-border/30 hover:border-primary/40 transition-all duration-500 hover-lift">
-        {/* Glow effect on hover */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent" />
-        </div>
-
-        {/* Image */}
-        <div className="relative aspect-square overflow-hidden bg-secondary/20">
+      <div className="relative overflow-hidden rounded-xl bg-card border border-border/20 hover:border-primary/30 transition-all duration-500 hover-lift">
+        {/* Image with swap on hover */}
+        <div className="relative aspect-square overflow-hidden bg-secondary/10">
           <img
-            src={product.image}
+            src={hovered && product.hoverImage ? product.hoverImage : product.image}
             alt={product.name}
             loading="lazy"
             width={800}
             height={800}
-            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
           />
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+          {/* Sold out overlay */}
+          {product.isSoldOut && (
+            <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
+              <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-wider bg-muted text-muted-foreground rounded-full">
+                Sold Out
+              </span>
+            </div>
+          )}
 
           {/* Badges */}
-          {(product.badge || product.isNew) && (
-            <span className="absolute top-3 left-3 px-3 py-1 text-[10px] font-bold tracking-wider uppercase rounded-full bg-primary/90 text-primary-foreground backdrop-blur-sm">
+          {(product.badge || product.isNew) && !product.isSoldOut && (
+            <span className="absolute top-2.5 left-2.5 px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase rounded-full bg-primary/90 text-primary-foreground backdrop-blur-sm">
               {product.isNew ? "New" : product.badge}
             </span>
           )}
 
-          {discount && (
-            <span className="absolute top-3 right-3 px-2.5 py-1 text-[10px] font-bold rounded-full bg-destructive/90 text-destructive-foreground backdrop-blur-sm">
+          {discount && !product.isSoldOut && (
+            <span className="absolute top-2.5 right-2.5 px-2 py-1 text-[10px] font-bold rounded-full bg-destructive/90 text-destructive-foreground backdrop-blur-sm">
               -{discount}%
             </span>
           )}
 
-          {/* Quick add */}
-          <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-400">
-            <Button
-              size="sm"
-              onClick={() => onAddToCart(product)}
-              className="w-full glass-strong text-foreground hover:bg-primary hover:text-primary-foreground font-medium text-xs transition-all duration-300 btn-shine"
-            >
-              <ShoppingBag className="h-3.5 w-3.5 mr-1.5" />
-              Add to Cart
-            </Button>
-          </div>
+          {/* Quick add overlay */}
+          {!product.isSoldOut && (
+            <div className="absolute bottom-2.5 left-2.5 right-2.5 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-400">
+              <Button
+                size="sm"
+                onClick={() => onAddToCart(product)}
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-medium text-xs transition-all duration-300"
+              >
+                <ShoppingBag className="h-3.5 w-3.5 mr-1.5" />
+                Add to Cart
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Info */}
-        <div className="p-4 relative z-10">
-          <p className="text-[10px] text-primary/70 uppercase tracking-widest mb-1 font-medium">
-            {product.category}
-          </p>
-          <h3 className="font-display font-semibold text-sm text-foreground mb-2.5 truncate group-hover:text-primary/90 transition-colors duration-300">
+        <div className="p-3.5">
+          <h3 className="font-body text-sm text-foreground mb-2 line-clamp-2 leading-snug group-hover:text-primary/90 transition-colors duration-300">
             {product.name}
           </h3>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="font-display font-bold text-foreground">
+            <div className="flex items-center gap-1.5">
+              <span className="font-display font-bold text-foreground text-sm">
                 ₹{product.price.toLocaleString()}
               </span>
               {product.originalPrice && (
@@ -86,9 +91,9 @@ const ProductCard = ({ product, index, onAddToCart }: ProductCardProps) => {
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10">
+            <div className="flex items-center gap-0.5">
               <Star className="h-3 w-3 fill-primary text-primary" />
-              <span className="text-[11px] text-primary font-medium">{product.rating}</span>
+              <span className="text-[11px] text-muted-foreground">{product.rating}</span>
             </div>
           </div>
         </div>

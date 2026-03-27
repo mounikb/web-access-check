@@ -1,18 +1,22 @@
 import { useState, useCallback } from "react";
+import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
+import HeroCarousel from "@/components/HeroCarousel";
 import MarqueeBanner from "@/components/MarqueeBanner";
-import FeaturedProducts from "@/components/FeaturedProducts";
-import CategoriesSection from "@/components/CategoriesSection";
-import WhyChooseUs from "@/components/WhyChooseUs";
-import TrendingSection from "@/components/TrendingSection";
-import BrandStory from "@/components/BrandStory";
+import ProductCarousel from "@/components/ProductCarousel";
+import CTABanner from "@/components/CTABanner";
+import CategoryHighlights from "@/components/CategoryHighlights";
+import FeaturedProduct from "@/components/FeaturedProduct";
+import ServiceBanner from "@/components/ServiceBanner";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FooterSection from "@/components/FooterSection";
 import CartDrawer, { type CartItem } from "@/components/CartDrawer";
 import SearchModal from "@/components/SearchModal";
-import CursorGlow from "@/components/CursorGlow";
+import RecentPurchase from "@/components/RecentPurchase";
+import { newProducts, miceProducts, mousepadProducts, skatesProducts } from "@/lib/data";
 import type { Product } from "@/lib/data";
+import heroBanner2 from "@/assets/hero-banner-2.jpg";
+import heroBanner3 from "@/assets/hero-banner-3.jpg";
 
 const Index = () => {
   const [cartOpen, setCartOpen] = useState(false);
@@ -50,21 +54,72 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <CursorGlow />
+      <AnnouncementBar />
       <Navbar
         onCartOpen={() => setCartOpen(true)}
         onSearchOpen={() => setSearchOpen(true)}
         cartCount={cartCount}
       />
-      <HeroSection />
+      <HeroCarousel />
       <MarqueeBanner />
-      <FeaturedProducts onAddToCart={addToCart} />
-      <CategoriesSection />
-      <WhyChooseUs />
-      <TrendingSection onAddToCart={addToCart} />
-      <BrandStory />
+
+      {/* New Stuff */}
+      <ProductCarousel
+        id="new-stuff"
+        title="NEW STUFF 💯"
+        products={newProducts}
+        onAddToCart={addToCart}
+        viewAllLink="#"
+      />
+
+      {/* CTA Banner */}
+      <CTABanner
+        title="Ready to Click Heads?"
+        subtitle="Level up your game with premium peripherals."
+        ctaText="Shop Now"
+        ctaLink="#mice"
+        image={heroBanner3}
+      />
+
+      {/* Fresh Gaming Mouse */}
+      <ProductCarousel
+        id="mice"
+        title="Fresh Baked Gaming Mouse 🖱️"
+        products={miceProducts}
+        onAddToCart={addToCart}
+        viewAllLink="#"
+      />
+
+      {/* Featured Product */}
+      <FeaturedProduct onAddToCart={addToCart} />
+
+      {/* Mousepad Heaven */}
+      <ProductCarousel
+        id="mousepads"
+        title="MOUSEPAD HEAVEN 🏔️"
+        products={mousepadProducts}
+        onAddToCart={addToCart}
+        viewAllLink="#"
+      />
+
+      {/* Category Highlights */}
+      <CategoryHighlights />
+
+      {/* Service Banner */}
+      <ServiceBanner />
+
+      {/* Mouse Skates */}
+      <ProductCarousel
+        id="skates"
+        title="YUMMY MOUSE SKATES 🛹"
+        products={skatesProducts}
+        onAddToCart={addToCart}
+        viewAllLink="#"
+      />
+
       <TestimonialsSection />
       <FooterSection />
+
       <CartDrawer
         open={cartOpen}
         onClose={() => setCartOpen(false)}
@@ -73,6 +128,7 @@ const Index = () => {
         onRemove={removeItem}
       />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <RecentPurchase />
     </div>
   );
 };
