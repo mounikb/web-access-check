@@ -6,10 +6,12 @@ import FeaturedProducts from "@/components/FeaturedProducts";
 import CategoriesSection from "@/components/CategoriesSection";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import TrendingSection from "@/components/TrendingSection";
+import BrandStory from "@/components/BrandStory";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FooterSection from "@/components/FooterSection";
 import CartDrawer, { type CartItem } from "@/components/CartDrawer";
 import SearchModal from "@/components/SearchModal";
+import CursorGlow from "@/components/CursorGlow";
 import type { Product } from "@/lib/data";
 
 const Index = () => {
@@ -48,6 +50,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <CursorGlow />
       <Navbar
         onCartOpen={() => setCartOpen(true)}
         onSearchOpen={() => setSearchOpen(true)}
@@ -59,6 +62,7 @@ const Index = () => {
       <CategoriesSection />
       <WhyChooseUs />
       <TrendingSection onAddToCart={addToCart} />
+      <BrandStory />
       <TestimonialsSection />
       <FooterSection />
       <CartDrawer
