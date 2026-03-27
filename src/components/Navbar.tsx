@@ -33,16 +33,16 @@ const Navbar = ({ onCartOpen, onSearchOpen, cartCount }: NavbarProps) => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
           scrolled
-            ? "bg-background/80 backdrop-blur-xl border-b border-border"
+            ? "glass-strong shadow-lg shadow-background/50"
             : "bg-transparent"
         }`}
       >
         <div className="container mx-auto flex items-center justify-between h-16 md:h-20 px-4 md:px-8">
           {/* Logo */}
-          <a href="#" className="font-display text-xl md:text-2xl font-bold tracking-tight text-foreground">
-            NEX<span className="text-gradient">GEAR</span>
+          <a href="#" className="font-display text-xl md:text-2xl font-bold tracking-tight text-foreground group">
+            NEX<span className="text-gradient transition-all duration-300 group-hover:drop-shadow-[0_0_12px_hsl(45_100%_55%/0.5)]">GEAR</span>
           </a>
 
           {/* Desktop Links */}
@@ -51,7 +51,7 @@ const Navbar = ({ onCartOpen, onSearchOpen, cartCount }: NavbarProps) => {
               <a
                 key={link.label}
                 href={link.href}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors line-reveal"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300 line-reveal"
               >
                 {link.label}
               </a>
@@ -59,33 +59,37 @@ const Navbar = ({ onCartOpen, onSearchOpen, cartCount }: NavbarProps) => {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <Button
               variant="ghost"
               size="icon"
               onClick={onSearchOpen}
-              className="text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-all duration-300"
             >
-              <Search className="h-5 w-5" />
+              <Search className="h-[18px] w-[18px]" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="text-muted-foreground hover:text-foreground hidden md:flex"
+              className="text-muted-foreground hover:text-foreground hover:bg-secondary/50 hidden md:flex transition-all duration-300"
             >
-              <User className="h-5 w-5" />
+              <User className="h-[18px] w-[18px]" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
               onClick={onCartOpen}
-              className="relative text-muted-foreground hover:text-foreground"
+              className="relative text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-all duration-300"
             >
-              <ShoppingBag className="h-5 w-5" />
+              <ShoppingBag className="h-[18px] w-[18px]" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[9px] font-bold flex items-center justify-center shadow-lg shadow-primary/30"
+                >
                   {cartCount}
-                </span>
+                </motion.span>
               )}
             </Button>
             <Button
@@ -107,7 +111,7 @@ const Navbar = ({ onCartOpen, onSearchOpen, cartCount }: NavbarProps) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-background/95 backdrop-blur-xl flex flex-col p-8"
+            className="fixed inset-0 z-[60] bg-background/98 backdrop-blur-2xl flex flex-col p-8"
           >
             <div className="flex justify-between items-center mb-12">
               <span className="font-display text-xl font-bold text-foreground">
@@ -122,11 +126,11 @@ const Navbar = ({ onCartOpen, onSearchOpen, cartCount }: NavbarProps) => {
                 <motion.a
                   key={link.label}
                   href={link.href}
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
+                  transition={{ delay: i * 0.06 }}
                   onClick={() => setMobileOpen(false)}
-                  className="text-2xl font-display font-semibold text-foreground"
+                  className="text-3xl font-display font-bold text-foreground hover:text-primary transition-colors"
                 >
                   {link.label}
                 </motion.a>

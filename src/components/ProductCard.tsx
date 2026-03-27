@@ -16,46 +16,50 @@ const ProductCard = ({ product, index, onAddToCart }: ProductCardProps) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
+      transition={{ duration: 0.6, delay: index * 0.08 }}
       className="group relative"
     >
-      <div className="relative overflow-hidden rounded-xl bg-card border border-border/50 hover:border-primary/30 transition-all duration-500 hover-lift">
+      <div className="relative overflow-hidden rounded-2xl glass border border-border/30 hover:border-primary/40 transition-all duration-500 hover-lift">
+        {/* Glow effect on hover */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent" />
+        </div>
+
         {/* Image */}
-        <div className="relative aspect-square overflow-hidden bg-secondary/30">
+        <div className="relative aspect-square overflow-hidden bg-secondary/20">
           <img
             src={product.image}
             alt={product.name}
             loading="lazy"
             width={800}
             height={800}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
           />
-          {/* Overlay on hover */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-          {/* Badge */}
+          {/* Badges */}
           {(product.badge || product.isNew) && (
-            <span className="absolute top-3 left-3 px-3 py-1 text-[10px] font-bold tracking-wider uppercase rounded-full bg-primary text-primary-foreground">
+            <span className="absolute top-3 left-3 px-3 py-1 text-[10px] font-bold tracking-wider uppercase rounded-full bg-primary/90 text-primary-foreground backdrop-blur-sm">
               {product.isNew ? "New" : product.badge}
             </span>
           )}
 
-          {/* Discount badge */}
           {discount && (
-            <span className="absolute top-3 right-3 px-2 py-1 text-[10px] font-bold rounded-full bg-destructive text-destructive-foreground">
+            <span className="absolute top-3 right-3 px-2.5 py-1 text-[10px] font-bold rounded-full bg-destructive/90 text-destructive-foreground backdrop-blur-sm">
               -{discount}%
             </span>
           )}
 
-          {/* Quick add button */}
-          <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+          {/* Quick add */}
+          <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-400">
             <Button
               size="sm"
               onClick={() => onAddToCart(product)}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-medium text-xs"
+              className="w-full glass-strong text-foreground hover:bg-primary hover:text-primary-foreground font-medium text-xs transition-all duration-300 btn-shine"
             >
               <ShoppingBag className="h-3.5 w-3.5 mr-1.5" />
               Add to Cart
@@ -64,11 +68,11 @@ const ProductCard = ({ product, index, onAddToCart }: ProductCardProps) => {
         </div>
 
         {/* Info */}
-        <div className="p-4">
-          <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">
+        <div className="p-4 relative z-10">
+          <p className="text-[10px] text-primary/70 uppercase tracking-widest mb-1 font-medium">
             {product.category}
           </p>
-          <h3 className="font-display font-semibold text-sm text-foreground mb-2 truncate">
+          <h3 className="font-display font-semibold text-sm text-foreground mb-2.5 truncate group-hover:text-primary/90 transition-colors duration-300">
             {product.name}
           </h3>
           <div className="flex items-center justify-between">
@@ -82,9 +86,9 @@ const ProductCard = ({ product, index, onAddToCart }: ProductCardProps) => {
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10">
               <Star className="h-3 w-3 fill-primary text-primary" />
-              <span className="text-xs text-muted-foreground">{product.rating}</span>
+              <span className="text-[11px] text-primary font-medium">{product.rating}</span>
             </div>
           </div>
         </div>
